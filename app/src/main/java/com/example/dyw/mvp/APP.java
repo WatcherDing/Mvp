@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.os.Build;
 
 import com.jess.arms.base.BaseApplication;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 /**
  * <pre>

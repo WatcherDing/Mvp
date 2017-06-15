@@ -1,6 +1,7 @@
 package com.example.dyw.mvp.mvp.model.entity;
 
 import com.example.dyw.mvp.mvp.model.api.Api;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * <pre>
@@ -11,8 +12,12 @@ import com.example.dyw.mvp.mvp.model.api.Api;
  * </pre>
  */
 public class BaseJson<T> {
+
+    @SerializedName(value = "results", alternate = {""})
     private T data;
+    @SerializedName("count")
     private String code;
+    @SerializedName("error")
     private String msg;
 
     public T getData() {

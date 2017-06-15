@@ -1,12 +1,21 @@
 package com.example.dyw.mvp.mvp.presenter;
 
-import com.example.dyw.mvp.di.module.TestModule;
+import android.app.Application;
+
 import com.example.dyw.mvp.mvp.contract.TestContract;
-import com.example.dyw.mvp.mvp.ui.MainActivity;
+import com.example.dyw.mvp.mvp.model.api.service.HttpMethods;
+import com.example.dyw.mvp.mvp.model.entity.BaseJson;
+import com.example.dyw.mvp.mvp.model.entity.GItem;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 /**
  * <pre>
@@ -18,30 +27,35 @@ import javax.inject.Inject;
  */
 @ActivityScope
 public class TestPresenter extends BasePresenter<TestContract.Model, TestContract.View> implements TestContract.Presenter {
+    private RxErrorHandler mErrorHandler;
+    private AppManager mAppManager;
+    private Application mApplication;
 
     @Inject
-    public TestPresenter(TestContract.View view,TestContract.Model mode) {
-        //super(model, rootView);
+    public TestPresenter(TestContract.Model model, TestContract.View rootView, RxErrorHandler handler
+            , AppManager appManager, Application application) {
+        super(model, rootView);
+        this.mApplication = application;
+        this.mErrorHandler = handler;
+        this.mAppManager = appManager;
     }
 
     //这里定义业务方法,相应用户的交互
-    public void requestUsers(final boolean pullToRefresh) {
-//        @Override
-//        public Observable<List<User>> getUsers(int lastIdQueried, boolean update) {
-//            Observable<List<User>> users = mRepositoryManager.obtainRetrofitService(UserService.class)
-//                    .getUsers(lastIdQueried, USERS_PER_PAGE);
-//            //使用rxcache缓存,上拉刷新则不读取缓存,加载更多读取缓存
-//            return mRepositoryManager.obtainCacheService(CommonCache.class)
-//                    .getUsers(users
-//                            , new DynamicKey(lastIdQueried)
-//                            , new EvictDynamicKey(update))
-//                    .flatMap(new Function<Reply<List<User>>, ObservableSource<List<User>>>() {
-//                        @Override
-//                        public ObservableSource<List<User>> apply(@NonNull Reply<List<User>> listReply) throws Exception {
-//                            return Observable.just(listReply.getData());
-//                        }
-//                    });
-//        }
+
+    /**
+     * 是否刷新数据
+     * @param pullToRefresh
+     */
+    public void requesta(final boolean pullToRefresh) {
+        ErrorHandleSubscriber subscriber=   new ErrorHandleSubscriber<BaseJson<List<GItem>>>(mErrorHandler) {
+            @Override
+            public void onNext(BaseJson<List<GItem>> data) {
+                List<GItem> list = data.getData();
+
+            }
+        };
+
+        HttpMethods.getInstance().getData(mModel.getGankIO(),subscriber,mRootView);
     }
 
 }

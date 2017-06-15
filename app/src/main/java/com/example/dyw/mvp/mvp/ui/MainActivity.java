@@ -2,7 +2,8 @@ package com.example.dyw.mvp.mvp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.dyw.mvp.R;
 import com.example.dyw.mvp.di.component.DaggerTestcComponent;
@@ -11,8 +12,10 @@ import com.example.dyw.mvp.mvp.contract.TestContract;
 import com.example.dyw.mvp.mvp.presenter.TestPresenter;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.di.component.DaggerAppComponent;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * <pre>
@@ -23,6 +26,13 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
  * </pre>
  */
 public class MainActivity extends BaseActivity<TestPresenter> implements TestContract.View {
+
+
+
+    @BindView(R.id.text)
+    TextView textA;
+
+
     private RxPermissions mRxPermissions;
 
     @Override
@@ -44,6 +54,7 @@ public class MainActivity extends BaseActivity<TestPresenter> implements TestCon
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        mPresenter.requesta(false);
 
     }
 
@@ -71,6 +82,13 @@ public class MainActivity extends BaseActivity<TestPresenter> implements TestCon
     @Override
     public void killMyself() {
 
+    }
+    @Override
+    protected void onDestroy() {
+        //DefaultAdapter.releaseAllHolder(mRecyclerView);//super.onDestroy()之后会unbind,所有view被置为null,所以必须在之前调用
+        super.onDestroy();
+        this.mRxPermissions = null;
+        //this.mPaginate = null;
     }
 
 

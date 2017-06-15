@@ -9,7 +9,6 @@
 - 存放网络访问的接口
 
 
-
 ### V(View)
 - 负责UI具体实现展现。比如Presenter派发过来一个动作是showDialog显示进度命令，那么我们这个View就负责实现具体UI。
 

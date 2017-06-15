@@ -1,5 +1,8 @@
 package com.example.dyw.mvp.mvp.model.api.cache;
 
+import com.example.dyw.mvp.mvp.model.entity.BaseJson;
+import com.example.dyw.mvp.mvp.model.entity.GItem;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +23,7 @@ import io.rx_cache2.Reply;
 public interface CommonCache {
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
-    Observable<Reply<List<String>>> getUsers(Observable<List<String>> users, DynamicKey idLastUserQueried, EvictProvider evictProvider);
+    Observable<Reply<BaseJson<List<GItem>>>> getUsers(Observable<BaseJson<List<GItem>>> users);
 
 
 }
